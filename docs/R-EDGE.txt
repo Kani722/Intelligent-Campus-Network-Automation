@@ -1,0 +1,19 @@
+R-EDGE
+
+Router#configure terminal
+Router(config)#hostname R-CORE
+R-CORE(config)#interface Gi0/0
+R-CORE(config-if)#description WAN-to-Internet
+R-CORE(config-if)#ip address 203.0.113.1 255.255.255.252
+R-CORE(config-if)#no shutdown
+R-CORE(config-if)#exit
+
+R-CORE(config)#interface Gi0/1
+R-CORE(config-if)#description R-CORE-Link
+R-CORE(config-if)#ip address 192.168.0.1 255.255.255.252
+R-CORE(config-if)#no shutdown
+R-CORE(config-if)#exit
+R-CORE(config)#exit
+R-CORE#write
+
+R-CORE#show ip interface brief

@@ -1,0 +1,65 @@
+SW-D-DMME
+
+Switch>enable
+Switch#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#hostname SW-D-DMME
+SW-D-DMME(config)#ip routing
+
+SW-D-DMME(config)#interface Gi0/3
+SW-D-DMME(config-if)#description SW-CORE-Link
+SW-D-DMME(config-if)#no switchport
+SW-D-DMME(config-if)#ip address 10.255.1.10 255.255.255.252
+SW-D-DMME(config-if)#no shutdown
+SW-D-DMME(config-if)#exit
+
+SW-D-DMME(config)#interface Gi0/0
+SW-D-DMME(config-if)#description SW-A-DMME-Trunk
+SW-D-DMME(config-if)#switchport trunk encapsulation dot1q
+SW-D-DMME(config-if)#switchport mode trunk
+SW-D-DMME(config-if)#switchport trunk native vlan 100
+SW-D-DMME(config-if)#switchport trunk allowed vlan 30,99,100
+SW-D-DMME(config-if)#no shutdown
+SW-D-DMME(config-if)#exit
+
+SW-D-DMME(config)#vlan 30
+SW-D-DMME(config-vlan)#name VLAN_DMME
+SW-D-DMME(config-vlan)#exit
+
+SW-D-DMME(config)#vlan 99
+SW-D-DMME(config-vlan)#name VLAN_MGMT
+SW-D-DMME(config-vlan)#exit
+
+SW-D-DMME(config)#vlan 100
+SW-D-DMME(config-vlan)#name NATIVE_VLAN
+SW-D-DMME(config-vlan)#exit
+
+SW-D-DMME(config)#interface Vlan30
+SW-D-DMME(config-if)#ip address 10.10.30.1 255.255.255.0
+SW-D-DMME(config-if)#no shutdown
+SW-D-DMME(config-if)#exit
+
+SW-D-DMME(config)#interface Vlan99
+SW-D-DMME(config-if)#description VLAN-MGMT
+SW-D-DMME(config-if)#ip address 10.99.99.13 255.255.255.0
+SW-D-DMME(config-if)#no shutdown
+SW-D-DMME(config-if)#exit
+SW-D-DMME(config)#ip default-gateway 10.99.99.1
+
+SW-D-DMME(config)#ip access-list extended ACL_DMME
+SW-D-DMME(config-ext-nacl)#$10.10.30.0 0.0.0.255 10.10.40.0 0.0.0.255
+SW-D-DMME(config-ext-nacl)#$10.10.30.0 0.0.0.255 10.10.20.0 0.0.0.255
+SW-D-DMME(config-ext-nacl)#30 permit ip any any
+SW-D-DMME(config-ext-nacl)#exit
+
+SW-D-DMME(config)#interface Vlan30
+SW-D-DMME(config-if)#ip access-group ACL_DMME in
+SW-D-DMME(config-if)#exit
+
+SW-D-DMME(config)#router ospf 1
+SW-D-DMME(config-router)#network 10.255.1.8 0.0.0.3 area 0
+SW-D-DMME(config-router)#network 10.10.30.0 0.0.0.255 area 0
+SW-D-DMME(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-D-DMME(config-router)#exit
+SW-D-DMME(config)#exit
+SW-D-DMME#write

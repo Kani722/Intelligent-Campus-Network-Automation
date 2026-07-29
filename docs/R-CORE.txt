@@ -1,0 +1,46 @@
+R-CORE
+
+Router#configure terminal
+Router(config)#hostname R-CORE
+R-CORE(config)#interface Gi0/1
+R-CORE(config-if)#description R-EDGE-Link
+R-CORE(config-if)#ip address 192.168.0.2 255.255.255.252
+R-CORE(config-if)#no shutdown
+R-CORE(config-if)#exit
+
+R-CORE(config)#interface Gi0/0
+R-CORE(config-if)#description SW-CORE-Link
+R-CORE(config-if)#ip address 192.168.1.1 255.255.255.252
+R-CORE(config-if)#no shutdown
+R-CORE(config-if)#exit
+
+R-CORE(config)#interface Loopback0
+R-CORE(config-if)#description OSPF-Router-ID
+R-CORE(config-if)#ip address 2.2.2.2 255.255.255.255
+R-CORE(config-if)#no shutdown
+R-CORE(config-if)#exit
+R-CORE(config)#exit
+R-CORE#write
+
+R-CORE#show ip interface brief
+
+R-CORE(config)#router ospf 1
+R-CORE(config-router)#network 192.168.0.0 0.0.0.3 area 0
+R-CORE(config-router)#network 192.168.1.0 0.0.0.3 area 0
+R-CORE(config-router)#network 10.255.1.0 0.0.0.3 area 0
+R-CORE(config-router)#network 10.255.1.4 0.0.0.3 area 0
+R-CORE(config-router)#network 10.255.1.8 0.0.0.3 area 0
+R-CORE(config-router)#exit
+R-CORE(config)#exit
+R-CORE#write
+
+enable
+configure terminal
+router ospf 1
+network 10.255.1.0 0.0.0.3 area 0
+network 10.255.1.4 0.0.0.3 area 0
+network 10.255.1.8 0.0.0.3 area 0
+exit
+exit
+write
+

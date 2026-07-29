@@ -1,0 +1,52 @@
+SW-A-DEIE
+
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname SW-A-DEIE
+SW-A-DEIE(config)#vlan 10
+SW-A-DEIE(config-vlan)#name VLAN_DEIE
+SW-A-DEIE(config-vlan)#exit
+
+SW-A-DEIE(config)#vlan 99
+SW-A-DEIE(config-vlan)#name VLAN_MGMT
+SW-A-DEIE(config-vlan)#exit
+
+SW-A-DEIE(config)#vlan 100
+SW-A-DEIE(config-vlan)#name NATIVE
+SW-A-DEIE(config-vlan)#exit
+
+SW-A-DEIE(config)#interface Vlan99
+SW-A-DEIE(config-if)#description VLAN-MGMT
+SW-A-DEIE(config-if)#ip address 10.99.99.21 255.255.255.0
+SW-A-DEIE(config-if)#no shutdown
+SW-A-DEIE(config-if)#exit
+SW-A-DEIE(config)#ip default-gateway 10.99.99.1
+SW-A-DEIE(config)#exit
+SW-A-DEIE#write
+
+SW-A-DEIE(config)#interface Gi0/0
+SW-A-DEIE(config-if)#description SW-D-DEIE-Trunk
+SW-A-DEIE(config-if)#switchport trunk encapsulation dot1q
+SW-A-DEIE(config-if)#switchport mode trunk
+SW-A-DEIE(config-if)#switchport trunk native vlan 100
+SW-A-DEIE(config-if)#switchport trunk allowed vlan 10,99,100
+SW-A-DEIE(config-if)#no shutdown
+SW-A-DEIE(config-if)#exit
+SW-A-DEIE(config)#exit
+SW-A-DEIE#write
+
+SW-A-DEIE(config)#interface Gi0/1
+SW-A-DEIE(config-if)#description VPC-D1-Link
+SW-A-DEIE(config-if)#switchport mode access
+SW-A-DEIE(config-if)#switchport access vlan 10
+SW-A-DEIE(config-if)#no shutdown
+SW-A-DEIE(config-if)#exit
+
+SW-A-DEIE(config)#interface Gi0/2
+SW-A-DEIE(config-if)#description VPC-D2-Link
+SW-A-DEIE(config-if)#switchport mode access
+SW-A-DEIE(config-if)#switchport access vlan 10
+SW-A-DEIE(config-if)#no shutdown
+SW-A-DEIE(config-if)#exit
+SW-A-DEIE(config)#exit
+SW-A-DEIE#write

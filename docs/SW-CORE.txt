@@ -1,0 +1,87 @@
+SW-CORE
+
+Switch>enable
+Switch(config)#hostname SW-CORE
+SW-CORE(config)#ip routing
+SW-CORE(config)#interface Gi0/0
+SW-CORE(config-if)#description R-CORE-Uplink
+SW-CORE(config-if)#no switchport
+SW-CORE(config-if)#ip address 192.168.1.2 255.255.255.252
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi0/1
+SW-CORE(config-if)#description SW-D-DEIE-Link
+SW-CORE(config-if)#no switchport
+SW-CORE(config-if)#ip address 10.255.1.1 255.255.255.252
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi0/2
+SW-CORE(config-if)#description SW-D-DCEE-Link
+SW-CORE(config-if)#no switchport
+SW-CORE(config-if)#ip address 10.255.1.5 255.255.255.252
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi0/3
+SW-CORE(config-if)#description SW-D-DMME-Link
+SW-CORE(config-if)#no switchport
+SW-CORE(config-if)#ip address 10.255.1.9 255.255.255.252
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi1/0
+SW-CORE(config-if)#description SW-A-DIS-Trunk
+SW-CORE(config-if)#switchport trunk encapsulation dot1q
+SW-CORE(config-if)#switchport mode trunk
+SW-CORE(config-if)#switchport trunk native vlan 100
+SW-CORE(config-if)#switchport trunk allowed vlan 40,99,100
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#vlan 40
+SW-CORE(config-vlan)#name VLAN_DIS
+SW-CORE(config-vlan)#exit
+
+SW-CORE(config)#vlan 99
+SW-CORE(config-vlan)#name VLAN_MGMT
+SW-CORE(config-vlan)#exit
+
+SW-CORE(config)#vlan 100
+SW-CORE(config-vlan)#name Native_VLAN
+SW-CORE(config-vlan)#exit
+
+SW-CORE(config)#interface Vlan40
+SW-CORE(config-if)#description VLAN-DIS
+SW-CORE(config-if)#ip address 10.10.40.1 255.255.255.0
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Vlan99
+SW-CORE(config-if)#description VLAN-MGMT
+SW-CORE(config-if)#ip address 10.99.99.1 255.255.255.0
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Loopback0
+SW-CORE(config-if)#description OSPF-Router-ID
+SW-CORE(config-if)#ip address 3.3.3.3 255.255.255.255
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#router ospf 1
+SW-CORE(config-router)#router-id 3.3.3.3
+SW-CORE(config-router)#network 192.168.1.0 0.0.0.3 area 0
+SW-CORE(config-router)#network 10.255.1.0 0.0.0.3 area 0
+SW-CORE(config-router)#network 10.255.1.4 0.0.0.3 area 0
+SW-CORE(config-router)#network 10.255.1.8 0.0.0.3 area 0
+SW-CORE(config-router)#network 10.10.40.0 0.0.0.255 area 0
+SW-CORE(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-CORE(config-router)#exit
+SW-CORE(config)#exit
+SW-CORE#write
+
+
+
+

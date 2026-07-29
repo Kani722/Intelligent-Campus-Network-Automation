@@ -1,0 +1,52 @@
+SW-A-DMME
+
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname SW-A-DMME
+SW-A-DMME(config)#vlan 30
+SW-A-DMME(config-vlan)#name VLAN_DMME
+SW-A-DMME(config-vlan)#exit
+
+SW-A-DMME(config)#vlan 99
+SW-A-DMME(config-vlan)#name VLAN_MGMT
+SW-A-DMME(config-vlan)#exit
+
+SW-A-DMME(config)#vlan 100
+SW-A-DMME(config-vlan)#name NATIVE_VLAN
+SW-A-DMME(config-vlan)#exit
+
+SW-A-DMME(config)#interface Vlan99
+SW-A-DMME(config-if)#description VLAN-MGMT
+SW-A-DMME(config-if)#ip address 10.99.99.23 255.255.255.0
+SW-A-DMME(config-if)#no shutdown
+SW-A-DMME(config-if)#exit
+SW-A-DMME(config)#ip default-gateway 10.99.99.1
+SW-A-DMME(config)#exit
+SW-A-DMME#write
+
+SW-A-DMME(config)#interface Gi0/0
+SW-A-DMME(config-if)#description SW-D-DMME-Trunk
+SW-A-DMME(config-if)#switchport trunk encapsulation dot1q
+SW-A-DMME(config-if)#switchport mode trunk
+SW-A-DMME(config-if)#switchport trunk native vlan 100
+SW-A-DMME(config-if)#switchport trunk allowed vlan 30,99,100
+SW-A-DMME(config-if)#no shutdown
+SW-A-DMME(config-if)#exit
+SW-A-DMME(config)#exit
+SW-A-DMME#write
+
+SW-A-DMME(config)#interface Gi0/1
+SW-A-DMME(config-if)#description VPC-M1-Link
+SW-A-DMME(config-if)#switchport mode access
+SW-A-DMME(config-if)#switchport access vlan 30
+SW-A-DMME(config-if)#no shutdown
+SW-A-DMME(config-if)#exit
+
+SW-A-DMME(config)#interface Gi0/2
+SW-A-DMME(config-if)#description VPC-M2-Link
+SW-A-DMME(config-if)#switchport mode access
+SW-A-DMME(config-if)#switchport access vlan 30
+SW-A-DMME(config-if)#no shutdown
+SW-A-DMME(config-if)#exit
+SW-A-DMME(config)#exit
+SW-A-DMME#write

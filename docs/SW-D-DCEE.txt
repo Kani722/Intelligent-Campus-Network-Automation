@@ -1,0 +1,68 @@
+SW-D-DCEE
+
+Switch>enable
+Switch#configure terminal
+Enter configuration commands, one per line.  End with CNTL/Z.
+Switch(config)#hostname SW-D-DCEE
+SW-D-DCEE(config)#ip routing
+
+SW-D-DCEE(config)#interface Gi0/2
+SW-D-DCEE(config-if)#description SW-CORE-Link
+SW-D-DCEE(config-if)#no switchport
+SW-D-DCEE(config-if)#ip address 10.255.1.6 255.255.255.252
+SW-D-DCEE(config-if)#no shutdown
+SW-D-DCEE(config-if)#exit
+
+SW-D-DCEE(config)#interface Gi0/0
+SW-D-DCEE(config-if)#description SW-A-DCEE-Trunk
+SW-D-DCEE(config-if)#switchport trunk encapsulation dot1q
+SW-D-DCEE(config-if)#switchport mode trunk
+SW-D-DCEE(config-if)#switchport trunk native vlan 100
+SW-D-DCEE(config-if)#switchport trunk allowed vlan 20,99,100
+SW-D-DCEE(config-if)#no shutdown
+SW-D-DCEE(config-if)#exit
+
+SW-D-DCEE(config)#vlan 20
+SW-D-DCEE(config-vlan)#name VLAN_DCEE
+SW-D-DCEE(config-vlan)#exit
+
+SW-D-DCEE(config)#vlan 99
+SW-D-DCEE(config-vlan)#name VLAN_MGMT
+SW-D-DCEE(config-vlan)#exit
+
+SW-D-DCEE(config)#vlan 100
+SW-D-DCEE(config-vlan)#name NATIVE_VLAN
+SW-D-DCEE(config-vlan)#exit
+
+SW-D-DCEE(config)#interface Vlan20
+SW-D-DCEE(config-if)#ip address 10.10.20.1 255.255.255.0
+SW-D-DCEE(config-if)#no shutdown
+SW-D-DCEE(config-if)#exit
+
+SW-D-DCEE(config)#interface Vlan99
+SW-D-DCEE(config-if)#description VLAN-MGMT
+SW-D-DCEE(config-if)#ip address 10.99.99.12 255.255.255.0
+SW-D-DCEE(config-if)#no shutdown
+SW-D-DCEE(config-if)#exit
+
+SW-D-DCEE(config)#ip default-gateway 10.99.99.1
+
+SW-D-DCEE(config)#ip access-list extended ACL_DCEE
+SW-D-DCEE(config-ext-nacl)#$10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255 eq 80
+SW-D-DCEE(config-ext-nacl)#$10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255 eq 443
+SW-D-DCEE(config-ext-nacl)#deny ip 10.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255
+SW-D-DCEE(config-ext-nacl)#deny ip 10.10.20.0 0.0.0.255 any
+SW-D-DCEE(config-ext-nacl)#permit ip any any
+SW-D-DCEE(config-ext-nacl)#exit
+
+SW-D-DCEE(config)#interface Vlan20
+SW-D-DCEE(config-if)#ip access-group ACL_DCEE in
+SW-D-DCEE(config-if)#exit
+
+SW-D-DCEE(config)#router ospf 1
+SW-D-DCEE(config-router)#network 10.255.1.4 0.0.0.3 area 0
+SW-D-DCEE(config-router)#network 10.10.20.0 0.0.0.255 area 0
+SW-D-DCEE(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-D-DCEE(config-router)#exit
+SW-D-DCEE(config)#exit
+SW-D-DCEE#write

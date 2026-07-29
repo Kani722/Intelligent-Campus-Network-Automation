@@ -1,0 +1,52 @@
+SW-A-DCEE
+
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname SW-A-DCEE
+SW-A-DCEE(config)#vlan 20
+SW-A-DCEE(config-vlan)#name VLAN_DCEE
+SW-A-DCEE(config-vlan)#exit
+
+SW-A-DCEE(config)#vlan 99
+SW-A-DCEE(config-vlan)#name VLAN_MGMT
+SW-A-DCEE(config-vlan)#exit
+
+SW-A-DCEE(config)#vlan 100
+SW-A-DCEE(config-vlan)#name NATIVE_VLAN
+SW-A-DCEE(config-vlan)#exit
+
+SW-A-DCEE(config)#interface Vlan99
+SW-A-DCEE(config-if)#description VLAN-MGMT
+SW-A-DCEE(config-if)#ip address 10.99.99.22 255.255.255.0
+SW-A-DCEE(config-if)#no shutdown
+SW-A-DCEE(config-if)#exit
+SW-A-DCEE(config)#ip default-gateway 10.99.99.1
+SW-A-DCEE(config)#exit
+SW-A-DCEE#write
+
+SW-A-DCEE(config)#interface Gi0/0
+SW-A-DCEE(config-if)#description SW-D-DCEE-Trunk
+SW-A-DCEE(config-if)#switchport trunk encapsulation dot1q
+SW-A-DCEE(config-if)#switchport mode trunk
+SW-A-DCEE(config-if)#switchport trunk native vlan 100
+SW-A-DCEE(config-if)#switchport trunk allowed vlan 20,99,100
+SW-A-DCEE(config-if)#no shutdown
+SW-A-DCEE(config-if)#exit
+SW-A-DCEE(config)#exit
+SW-A-DCEE#write
+
+SW-A-DCEE(config)#interface Gi0/1
+SW-A-DCEE(config-if)#description VPC-C1-Link
+SW-A-DCEE(config-if)#switchport mode access
+SW-A-DCEE(config-if)#switchport access vlan 20
+SW-A-DCEE(config-if)#no shutdown
+SW-A-DCEE(config-if)#exit
+
+SW-A-DCEE(config)#interface Gi0/2
+SW-A-DCEE(config-if)#description VPC-C2-Link
+SW-A-DCEE(config-if)#switchport mode access
+SW-A-DCEE(config-if)#switchport access vlan 20
+SW-A-DCEE(config-if)#no shutdown
+SW-A-DCEE(config-if)#exit
+SW-A-DCEE(config)#exit
+SW-A-DCEE#write

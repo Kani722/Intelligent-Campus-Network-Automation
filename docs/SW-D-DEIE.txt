@@ -1,0 +1,66 @@
+SW-D-DEIE
+
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname SW-D-DEIE
+SW-D-DEIE(config)#ip routing
+
+SW-D-DEIE(config)#interface Gi0/1
+SW-D-DEIE(config-if)#description SW-CORE-Link
+SW-D-DEIE(config-if)#no switchport
+SW-D-DEIE(config-if)#ip address 10.255.1.2 255.255.255.252
+SW-D-DEIE(config-if)#no shutdown
+SW-D-DEIE(config-if)#exit
+
+SW-D-DEIE(config)#interface Gi0/0
+SW-D-DEIE(config-if)#description SW-A-DEIE-Trunk
+SW-D-DEIE(config-if)#switchport trunk encapsulation dot1q
+SW-D-DEIE(config-if)#switchport mode trunk
+SW-D-DEIE(config-if)#switchport trunk native vlan 100
+SW-D-DEIE(config-if)#switchport trunk allowed vlan 10,99,100
+SW-D-DEIE(config-if)#no shutdown
+SW-D-DEIE(config-if)#exit
+
+SW-D-DEIE(config)#vlan 10
+SW-D-DEIE(config-vlan)#name VLAN_DEIE
+SW-D-DEIE(config-vlan)#exit
+
+SW-D-DEIE(config)#vlan 99
+SW-D-DEIE(config-vlan)#name VLAN_MGMT
+SW-D-DEIE(config-vlan)#exit
+
+SW-D-DEIE(config)#vlan 100
+SW-D-DEIE(config-vlan)#name NATIVE_VLAN
+SW-D-DEIE(config-vlan)#exit
+
+SW-D-DEIE(config)#interface Vlan10
+SW-D-DEIE(config-if)#ip address 10.10.10.1 255.255.255.0
+SW-D-DEIE(config-if)#no shutdown
+SW-D-DEIE(config-if)#exit
+
+SW-D-DEIE(config)#interface Vlan99
+SW-D-DEIE(config-if)#description VLAN-MGMT
+SW-D-DEIE(config-if)#ip address 10.99.99.11 255.255.255.0
+SW-D-DEIE(config-if)#no shutdown
+SW-D-DEIE(config-if)#exit
+
+SW-D-DEIE(config)#ip access-list extended ACL_DEIE
+SW-D-DEIE(config-ext-nacl)#permit ip 10.10.10.0 0.0.0.255 10.10.40.0 0.0.0.255
+SW-D-DEIE(config-ext-nacl)#deny ip 10.10.10.0 0.0.0.255 any
+SW-D-DEIE(config-ext-nacl)#permit ip any any
+SW-D-DEIE(config-ext-nacl)#exit
+
+SW-D-DEIE(config)#interface Vlan10
+SW-D-DEIE(config-if)#ip access-group ACL_DEIE in
+SW-D-DEIE(config-if)#exit
+
+SW-D-DEIE(config)#router ospf 1
+SW-D-DEIE(config-router)#network 10.255.1.0 0.0.0.3 area 0
+SW-D-DEIE(config-router)#network 10.10.10.0 0.0.0.255 area 0
+SW-D-DEIE(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-D-DEIE(config-router)#exit
+
+SW-D-DEIE(config)#ip default-gateway 10.99.99.1
+SW-D-DEIE(config)#exit
+SW-D-DEIE#write
+

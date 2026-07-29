@@ -1,0 +1,125 @@
+SW-A-DIS
+
+Switch>enable
+Switch#configure terminal
+Switch(config)#hostname SW-A-DIS
+SW-A-DIS(config)#vlan 40
+SW-A-DIS(config-vlan)#name VLAN_DIS
+SW-A-DIS(config-vlan)#exit
+
+SW-A-DIS(config)#vlan 99
+SW-A-DIS(config-vlan)#name VLAN_MGMT
+SW-A-DIS(config-vlan)#exit
+
+SW-A-DIS(config)#vlan 100
+SW-A-DIS(config-vlan)#name NATIVE_VLAN
+SW-A-DIS(config-vlan)#exit
+
+SW-A-DIS(config)#interface Vlan99
+SW-A-DIS(config-if)#description VLAN-MGMT
+SW-A-DIS(config-if)#ip address 10.99.99.24 255.255.255.0
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+SW-A-DIS(config)#ip default-gateway 10.99.99.1
+SW-A-DIS(config)#exit
+SW-A-DIS#write
+
+SW-A-DIS(config)#interface Gi1/0
+SW-A-DIS(config-if)#description SW-CORE-Trunk
+SW-A-DIS(config-if)#switchport trunk encapsulation dot1q
+SW-A-DIS(config-if)#switchport mode trunk
+SW-A-DIS(config-if)#switchport trunk native vlan 100
+SW-A-DIS(config-if)#switchport trunk allowed vlan 40,99,100
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+SW-A-DIS(config)#exit
+SW-A-DIS#write
+
+SW-A-DIS(config)#interface Gi0/1
+SW-A-DIS(config-if)#description VPC-S1-Link
+SW-A-DIS(config-if)#switchport mode access
+SW-A-DIS(config-if)#switchport access vlan 40
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+
+SW-A-DIS(config)#interface Gi0/2
+SW-A-DIS(config-if)#description VPC-S2-Link
+SW-A-DIS(config-if)#switchport mode access
+SW-A-DIS(config-if)#switchport access vlan 40
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+
+SW-A-DIS(config)#interface Gi0/3
+SW-A-DIS(config-if)#description VM-DHCP-Link
+SW-A-DIS(config-if)#switchport mode access
+SW-A-DIS(config-if)#switchport access vlan 40
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+
+SW-A-DIS(config)#exit
+SW-A-DIS#write
+
+
+enable
+configure terminal
+hostname SW-A-DIS
+
+vlan 40
+name VLAN_DIS
+exit
+
+vlan 99
+name VLAN_MGMT
+exit
+
+vlan 100
+name NATIVE_VLAN
+exit
+
+interface Vlan99
+description VLAN-MGMT
+ip address 10.99.99.24 255.255.255.0
+no shutdown
+exit
+
+ip default-gateway 10.99.99.1
+exit
+write
+
+configure terminal
+interface Gi1/0
+description SW-CORE-Trunk
+switchport trunk encapsulation dot1q
+switchport mode trunk
+switchport trunk native vlan 100
+switchport trunk allowed vlan 40,99,100
+no shutdown
+exit
+
+exit
+write
+
+configure terminal
+interface Gi0/1
+description VPC-S1-Link
+switchport mode access
+switchport access vlan 40
+no shutdown
+exit
+
+interface Gi0/2
+description VPC-S2-Link
+switchport mode access
+switchport access vlan 40
+no shutdown
+exit
+
+interface Gi0/3
+description VM-DHCP-Link
+switchport mode access
+switchport access vlan 40
+no shutdown
+exit
+
+exit
+write
