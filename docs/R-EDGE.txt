@@ -1,19 +1,51 @@
 R-EDGE
 
 Router#configure terminal
-Router(config)#hostname R-CORE
-R-CORE(config)#interface Gi0/0
-R-CORE(config-if)#description WAN-to-Internet
-R-CORE(config-if)#ip address 203.0.113.1 255.255.255.252
-R-CORE(config-if)#no shutdown
-R-CORE(config-if)#exit
+Router(config)#hostname R-EDGE
+R-EDGE(config)#interface Gi0/0
+R-EDGE(config-if)#description WAN-to-Internet
+R-EDGE(config-if)#ip address 203.0.113.1 255.255.255.252
+R-EDGE(config-if)#no shutdown
+R-EDGE(config-if)#exit
 
-R-CORE(config)#interface Gi0/1
-R-CORE(config-if)#description R-CORE-Link
-R-CORE(config-if)#ip address 192.168.0.1 255.255.255.252
-R-CORE(config-if)#no shutdown
-R-CORE(config-if)#exit
-R-CORE(config)#exit
-R-CORE#write
+R-EDGE(config)#interface Gi0/1
+R-EDGE(config-if)#description R-CORE-Link
+R-EDGE(config-if)#ip address 192.168.0.1 255.255.255.252
+R-EDGE(config-if)#no shutdown
+R-EDGE(config-if)#exit
 
-R-CORE#show ip interface brief
+R-EDGE(config)#interface Loopback0
+R-EDGE(config-if)#description OSPF-Router-ID
+R-EDGE(config-if)#ip address 1.1.1.1 255.255.255.255
+R-EDGE(config-if)#no shutdown
+R-EDGE(config-if)#exit
+R-EDGE(config)#exit
+R-EDGE#write
+
+R-EDGE#show ip interface brief
+
+R-EDGE(config)#router ospf 1
+R-EDGE(config-router)#router-id 1.1.1.1
+R-EDGE(config-router)#network 192.168.0.0 0.0.0.3 area 0
+R-EDGE(config-router)#default-information originate
+R-EDGE(config-router)#exit
+R-EDGE(config)#ip route 0.0.0.0 0.0.0.0 203.0.113.2
+R-EDGE(config)#exit
+R-EDGE#write
+
+R-EDGE(config)#ip access-list standard NAT_ACL
+R-EDGE(config-std-nacl)#permit 10.10.10.0 0.0.0.255
+R-EDGE(config-std-nacl)#permit 10.10.20.0 0.0.0.255
+R-EDGE(config-std-nacl)#exit
+R-EDGE(config)#ip nat inside source list NAT_ACL interface Gi0/0 overload
+R-EDGE(config)#interface Gi0/0
+R-EDGE(config-if)#description WAN-to-Internet-Link
+R-EDGE(config-if)#ip nat outside
+R-EDGE(config-if)#exit
+
+R-EDGE(config)#interface Gi0/1
+R-EDGE(config-if)#description R-CORE-Link
+R-EDGE(config-if)#ip nat inside
+R-EDGE(config-if)#exit
+R-EDGE(config)#exit
+R-EDGE#write

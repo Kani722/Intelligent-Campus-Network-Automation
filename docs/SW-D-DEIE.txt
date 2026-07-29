@@ -58,9 +58,19 @@ SW-D-DEIE(config)#router ospf 1
 SW-D-DEIE(config-router)#network 10.255.1.0 0.0.0.3 area 0
 SW-D-DEIE(config-router)#network 10.10.10.0 0.0.0.255 area 0
 SW-D-DEIE(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-D-DEIE(config-router)#passive-interface Vlan10
+SW-D-DEIE(config-router)#passive-interface Vlan99
 SW-D-DEIE(config-router)#exit
 
 SW-D-DEIE(config)#ip default-gateway 10.99.99.1
 SW-D-DEIE(config)#exit
 SW-D-DEIE#write
 
+enable
+configure terminal
+router ospf 1
+network 10.10.10.0 0.0.0.255 area 0
+network 10.99.99.0 0.0.0.255 area 0
+passive-interface Vlan10
+passive-interface Vlan99
+exit

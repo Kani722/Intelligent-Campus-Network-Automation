@@ -34,13 +34,3 @@ R-CORE(config-router)#exit
 R-CORE(config)#exit
 R-CORE#write
 
-enable
-configure terminal
-router ospf 1
-network 10.255.1.0 0.0.0.3 area 0
-network 10.255.1.4 0.0.0.3 area 0
-network 10.255.1.8 0.0.0.3 area 0
-exit
-exit
-write
-

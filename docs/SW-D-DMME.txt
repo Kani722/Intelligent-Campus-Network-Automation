@@ -60,6 +60,8 @@ SW-D-DMME(config)#router ospf 1
 SW-D-DMME(config-router)#network 10.255.1.8 0.0.0.3 area 0
 SW-D-DMME(config-router)#network 10.10.30.0 0.0.0.255 area 0
 SW-D-DMME(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-D-DMME(config-router)#passive-interface Vlan30
+SW-D-DMME(config-router)#passive-interface Vlan99
 SW-D-DMME(config-router)#exit
 SW-D-DMME(config)#exit
 SW-D-DMME#write

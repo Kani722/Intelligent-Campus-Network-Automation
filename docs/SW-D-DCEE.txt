@@ -63,6 +63,8 @@ SW-D-DCEE(config)#router ospf 1
 SW-D-DCEE(config-router)#network 10.255.1.4 0.0.0.3 area 0
 SW-D-DCEE(config-router)#network 10.10.20.0 0.0.0.255 area 0
 SW-D-DCEE(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-D-DCEE(config-router)#passive-interface Vlan20
+SW-D-DCEE(config-router)#passive-interface Vlan99
 SW-D-DCEE(config-router)#exit
 SW-D-DCEE(config)#exit
 SW-D-DCEE#write
