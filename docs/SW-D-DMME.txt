@@ -2,7 +2,6 @@ SW-D-DMME
 
 Switch>enable
 Switch#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 Switch(config)#hostname SW-D-DMME
 SW-D-DMME(config)#ip routing
 
@@ -47,9 +46,10 @@ SW-D-DMME(config-if)#exit
 SW-D-DMME(config)#ip default-gateway 10.99.99.1
 
 SW-D-DMME(config)#ip access-list extended ACL_DMME
-SW-D-DMME(config-ext-nacl)#$10.10.30.0 0.0.0.255 10.10.40.0 0.0.0.255
-SW-D-DMME(config-ext-nacl)#$10.10.30.0 0.0.0.255 10.10.20.0 0.0.0.255
-SW-D-DMME(config-ext-nacl)#30 permit ip any any
+SW-D-DMME(config-ext-nacl)#deny ip 10.10.30.0 0.0.0.255 10.10.40.0 0.0.0.255
+SW-D-DMME(config-ext-nacl)#deny ip 10.10.30.0 0.0.0.255 10.10.20.0 0.0.0.255
+SW-D-DMME(config-ext-nacl)#deny ip any any
+
 SW-D-DMME(config-ext-nacl)#exit
 
 SW-D-DMME(config)#interface Vlan30
@@ -65,3 +65,16 @@ SW-D-DMME(config-router)#passive-interface Vlan99
 SW-D-DMME(config-router)#exit
 SW-D-DMME(config)#exit
 SW-D-DMME#write
+
+SW-D-DMME(config)#ip domain-name efac.uor.lk
+SW-D-DMME(config)#crypto key generate rsa modulus 2048
+SW-D-DMME(config)#ip ssh version 2
+SW-D-DMME(config)#username admin privilege 15 secret cisco
+SW-D-DMME(config)#enable secret cisco
+SW-D-DMME(config)#line vty 0 15
+SW-D-DMME(config-line)#login local
+SW-D-DMME(config-line)#transport input ssh
+SW-D-DMME(config-line)#exit
+SW-D-DMME(config)#line console 0
+SW-D-DMME(config-line)#login local
+SW-D-DMME(config-line)#exit

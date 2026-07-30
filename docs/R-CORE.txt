@@ -34,3 +34,15 @@ R-CORE(config-router)#exit
 R-CORE(config)#exit
 R-CORE#write
 
+R-CORE(config)#ip domain-name efac.uor.lk
+R-CORE(config)#crypto key generate rsa modulus 2048
+R-CORE(config)#ip ssh version 2
+R-CORE(config)#username admin privilege 15 secret cisco
+R-CORE(config)#enable secret cisco
+R-CORE(config)#line vty 0 4
+R-CORE(config-line)#login local
+R-CORE(config-line)#transport input ssh
+R-CORE(config-line)#exit
+R-CORE(config)#line console 0
+R-CORE(config-line)#login local
+R-CORE(config-line)#exit

@@ -66,11 +66,15 @@ SW-D-DEIE(config)#ip default-gateway 10.99.99.1
 SW-D-DEIE(config)#exit
 SW-D-DEIE#write
 
-enable
-configure terminal
-router ospf 1
-network 10.10.10.0 0.0.0.255 area 0
-network 10.99.99.0 0.0.0.255 area 0
-passive-interface Vlan10
-passive-interface Vlan99
-exit
+SW-D-DEIE(config)#ip domain-name efac.uor.lk
+SW-D-DEIE(config)#crypto key generate rsa modulus 2048
+SW-D-DEIE(config)#ip ssh version 2
+SW-D-DEIE(config)#username admin privilege 15 secret cisco
+SW-D-DEIE(config)#enable secret cisco
+SW-D-DEIE(config)#line vty 0 15
+SW-D-DEIE(config-line)#login local
+SW-D-DEIE(config-line)#transport input ssh
+SW-D-DEIE(config-line)#exit
+SW-D-DEIE(config)#line console 0
+SW-D-DEIE(config-line)#login local
+SW-D-DEIE(config-line)#exit

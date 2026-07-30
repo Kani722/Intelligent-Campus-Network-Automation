@@ -49,3 +49,16 @@ R-EDGE(config-if)#ip nat inside
 R-EDGE(config-if)#exit
 R-EDGE(config)#exit
 R-EDGE#write
+
+R-EDGE(config)#ip domain-name efac.uor.lk
+R-EDGE(config)#crypto key generate rsa modulus 2048
+R-EDGE(config)#ip ssh version 2
+R-EDGE(config)#username admin privilege 15 secret cisco
+R-EDGE(config)#enable secret cisco
+R-EDGE(config)#line vty 0 4
+R-EDGE(config-line)#login local
+R-EDGE(config-line)#transport input ssh
+R-EDGE(config-line)#exit
+R-EDGE(config)#line console 0
+R-EDGE(config-line)#login local
+R-EDGE(config-line)#exit

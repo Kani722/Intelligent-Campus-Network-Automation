@@ -50,3 +50,16 @@ SW-A-DCEE(config-if)#no shutdown
 SW-A-DCEE(config-if)#exit
 SW-A-DCEE(config)#exit
 SW-A-DCEE#write
+
+SW-A-DCEE(config)#ip domain-name efac.uor.lk
+SW-A-DCEE(config)#crypto key generate rsa modulus 2048
+SW-A-DCEE(config)#ip ssh version 2
+SW-A-DCEE(config)#username admin privilege 15 secret cisco
+SW-A-DCEE(config)#enable secret cisco
+SW-A-DCEE(config)#line vty 0 15
+SW-A-DCEE(config-line)#login local
+SW-A-DCEE(config-line)#transport input ssh
+SW-A-DCEE(config-line)#exit
+SW-A-DCEE(config)#line console 0
+SW-A-DCEE(config-line)#login local
+SW-A-DCEE(config-line)#exit

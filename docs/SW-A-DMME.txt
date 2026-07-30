@@ -50,3 +50,16 @@ SW-A-DMME(config-if)#no shutdown
 SW-A-DMME(config-if)#exit
 SW-A-DMME(config)#exit
 SW-A-DMME#write
+
+SW-A-DMME(config)#ip domain-name efac.uor.lk
+SW-A-DMME(config)#crypto key generate rsa modulus 2048
+SW-A-DMME(config)#ip ssh version 2
+SW-A-DMME(config)#username admin privilege 15 secret cisco
+SW-A-DMME(config)#enable secret cisco
+SW-A-DMME(config)#line vty 0 15
+SW-A-DMME(config-line)#login local
+SW-A-DMME(config-line)#transport input ssh
+SW-A-DMME(config-line)#exit
+SW-A-DMME(config)#line console 0
+SW-A-DMME(config-line)#login local
+SW-A-DMME(config-line)#exit

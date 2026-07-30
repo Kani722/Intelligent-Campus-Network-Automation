@@ -2,7 +2,6 @@ SW-D-DCEE
 
 Switch>enable
 Switch#configure terminal
-Enter configuration commands, one per line.  End with CNTL/Z.
 Switch(config)#hostname SW-D-DCEE
 SW-D-DCEE(config)#ip routing
 
@@ -51,8 +50,7 @@ SW-D-DCEE(config)#ip access-list extended ACL_DCEE
 SW-D-DCEE(config-ext-nacl)#$10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255 eq 80
 SW-D-DCEE(config-ext-nacl)#$10.10.20.0 0.0.0.255 10.10.40.0 0.0.0.255 eq 443
 SW-D-DCEE(config-ext-nacl)#deny ip 10.10.20.0 0.0.0.255 10.10.10.0 0.0.0.255
-SW-D-DCEE(config-ext-nacl)#deny ip 10.10.20.0 0.0.0.255 any
-SW-D-DCEE(config-ext-nacl)#permit ip any any
+SW-D-DCEE(config-ext-nacl)#deny ip any any
 SW-D-DCEE(config-ext-nacl)#exit
 
 SW-D-DCEE(config)#interface Vlan20
@@ -68,3 +66,16 @@ SW-D-DCEE(config-router)#passive-interface Vlan99
 SW-D-DCEE(config-router)#exit
 SW-D-DCEE(config)#exit
 SW-D-DCEE#write
+
+SW-D-DCEE(config)#ip domain-name efac.uor.lk
+SW-D-DCEE(config)#crypto key generate rsa modulus 2048
+SW-D-DCEE(config)#ip ssh version 2
+SW-D-DCEE(config)#username admin privilege 15 secret cisco
+SW-D-DCEE(config)#enable secret cisco
+SW-D-DCEE(config)#line vty 0 15
+SW-D-DCEE(config-line)#login local
+SW-D-DCEE(config-line)#transport input ssh
+SW-D-DCEE(config-line)#exit
+SW-D-DCEE(config)#line console 0
+SW-D-DCEE(config-line)#login local
+SW-D-DCEE(config-line)#exit
