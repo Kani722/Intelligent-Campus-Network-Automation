@@ -46,3 +46,5 @@ R-CORE(config-line)#exit
 R-CORE(config)#line console 0
 R-CORE(config-line)#login local
 R-CORE(config-line)#exit
+
+

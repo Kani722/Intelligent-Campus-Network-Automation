@@ -78,3 +78,20 @@ SW-D-DMME(config-line)#exit
 SW-D-DMME(config)#line console 0
 SW-D-DMME(config-line)#login local
 SW-D-DMME(config-line)#exit
+
+SW-D-DMME(config)#vlan 103
+SW-D-DMME(config-vlan)#name TRANSIT_CORE
+SW-D-DMME(config-vlan)#exit
+
+SW-D-DMME(config)#interface Gi0/3
+SW-D-DMME(config-if)#no ip address
+SW-D-DMME(config-if)#switchport
+SW-D-DMME(config-if)#switchport trunk encapsulation dot1q
+SW-D-DMME(config-if)#switchport mode trunk
+SW-D-DMME(config-if)#switchport trunk allowed vlan 99,103
+SW-D-DMME(config-if)#exit
+
+SW-D-DMME(config)#interface Vlan103
+SW-D-DMME(config-if)#ip address 10.255.1.10 255.255.255.252
+SW-D-DMME(config-if)#no shutdown
+SW-D-DMME(config-if)#exit

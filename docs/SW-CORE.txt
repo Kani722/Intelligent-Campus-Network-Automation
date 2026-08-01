@@ -95,3 +95,88 @@ SW-CORE(config-line)#exit
 SW-CORE(config)#line console 0
 SW-CORE(config-line)#login local
 SW-CORE(config-line)#exit
+
+SW-CORE(config)#vlan 101
+SW-CORE(config-vlan)#name TRANSIT_DEIE
+SW-CORE(config-vlan)#exit
+
+SW-CORE(config)#interface Gi0/1
+SW-CORE(config-if)#no ip address
+SW-CORE(config-if)#switchport
+SW-CORE(config-if)#switchport trunk encapsulation dot1q
+SW-CORE(config-if)#switchport mode trunk
+SW-CORE(config-if)#switchport trunk allowed vlan 99,101
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Vlan101
+SW-CORE(config-if)#ip address 10.255.1.1 255.255.255.252
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#vlan 102
+SW-CORE(config-vlan)#name TRANSIT_DCEE
+SW-CORE(config-vlan)#vlan 103
+SW-CORE(config-vlan)#name TRANSIT_DMME
+SW-CORE(config-vlan)#exit
+
+SW-CORE(config)#interface Gi0/2
+SW-CORE(config-if)#no ip address
+SW-CORE(config-if)#switchport
+SW-CORE(config-if)#switchport trunk encapsulation dot1q
+SW-CORE(config-if)#switchport mode trunk
+SW-CORE(config-if)#switchport trunk allowed vlan 99,102
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Vlan102
+SW-CORE(config-if)#ip address 10.255.1.5 255.255.255.252
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi0/3
+SW-CORE(config-if)#no ip address
+SW-CORE(config-if)#switchport
+SW-CORE(config-if)#switchport trunk encapsulation dot1q
+SW-CORE(config-if)#switchport mode trunk
+SW-CORE(config-if)#switchport trunk allowed vlan 99,103
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Vlan103
+SW-CORE(config-if)#ip address 10.255.1.9 255.255.255.252
+SW-CORE(config-if)#no shutdown
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi1/1
+SW-CORE(config-if)#switchport mode access
+SW-CORE(config-if)#switchport access vlan 99
+SW-CORE(config-if)#no shut
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi1/2
+SW-CORE(config-if)#switchport mode access
+SW-CORE(config-if)#switchport access vlan 99
+SW-CORE(config-if)#no shut
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#ip routing
+SW-CORE(config)#interface Gi1/3
+SW-CORE(config-if)#no switchport
+SW-CORE(config-if)#ip address dhcp
+SW-CORE(config-if)#no shut
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Gi1/3
+SW-CORE(config-if)#ip nat outside
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#interface Vlan 99
+SW-CORE(config-if)#ip nat inside
+SW-CORE(config-if)#exit
+
+SW-CORE(config)#$rule allowing your 10.99.99.x network to be translated
+SW-CORE(config)#access-list 1 permit 10.99.99.0 0.0.0.255
+
+SW-CORE(config)#ip nat inside source list 1 interface Gi1/3 overload
+SW-CORE(config)#end
+
+
+

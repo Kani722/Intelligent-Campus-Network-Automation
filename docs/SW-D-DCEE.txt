@@ -79,3 +79,20 @@ SW-D-DCEE(config-line)#exit
 SW-D-DCEE(config)#line console 0
 SW-D-DCEE(config-line)#login local
 SW-D-DCEE(config-line)#exit
+
+SW-D-DCEE(config)#vlan 102
+SW-D-DCEE(config-vlan)#name TRANSIT_CORE
+SW-D-DCEE(config-vlan)#exit
+
+SW-D-DCEE(config)#interface Gi0/2
+SW-D-DCEE(config-if)#no ip address
+SW-D-DCEE(config-if)#switchport
+SW-D-DCEE(config-if)#switchport trunk encapsulation dot1q
+SW-D-DCEE(config-if)#switchport mode trunk
+SW-D-DCEE(config-if)#switchport trunk allowed vlan 99,102
+SW-D-DCEE(config-if)#exit
+
+SW-D-DCEE(config)#interface Vlan102
+SW-D-DCEE(config-if)#ip address 10.255.1.6 255.255.255.252
+SW-D-DCEE(config-if)#no shutdown
+SW-D-DCEE(config-if)#exit

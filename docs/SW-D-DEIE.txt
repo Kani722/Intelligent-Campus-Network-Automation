@@ -46,8 +46,7 @@ SW-D-DEIE(config-if)#exit
 
 SW-D-DEIE(config)#ip access-list extended ACL_DEIE
 SW-D-DEIE(config-ext-nacl)#permit ip 10.10.10.0 0.0.0.255 10.10.40.0 0.0.0.255
-SW-D-DEIE(config-ext-nacl)#deny ip 10.10.10.0 0.0.0.255 any
-SW-D-DEIE(config-ext-nacl)#permit ip any any
+SW-D-DEIE(config-ext-nacl)#20 deny ip any any
 SW-D-DEIE(config-ext-nacl)#exit
 
 SW-D-DEIE(config)#interface Vlan10
@@ -78,3 +77,20 @@ SW-D-DEIE(config-line)#exit
 SW-D-DEIE(config)#line console 0
 SW-D-DEIE(config-line)#login local
 SW-D-DEIE(config-line)#exit
+
+SW-D-DEIE(config)#vlan 101
+SW-D-DEIE(config-vlan)#name TRANSIT_CORE
+SW-D-DEIE(config-vlan)#exit
+
+SW-D-DEIE(config)#interface Gi0/1
+SW-D-DEIE(config-if)#no ip address
+SW-D-DEIE(config-if)#switchport
+SW-D-DEIE(config-if)#switchport trunk encapsulation dot1q
+SW-D-DEIE(config-if)#switchport mode trunk
+SW-D-DEIE(config-if)#switchport trunk allowed vlan 99,101
+SW-D-DEIE(config-if)#exit
+
+SW-D-DEIE(config)#interface Vlan101
+SW-D-DEIE(config-if)#ip address 10.255.1.2 255.255.255.252
+SW-D-DEIE(config-if)#no shutdown
+SW-D-DEIE(config-if)#exit
