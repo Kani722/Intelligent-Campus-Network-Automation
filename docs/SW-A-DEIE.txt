@@ -63,3 +63,12 @@ SW-A-DEIE(config-line)#exit
 SW-A-DEIE(config)#line console 0
 SW-A-DEIE(config-line)#login local
 SW-A-DEIE(config-line)#exit
+
+SW-A-DEIE(config)#vlan 101
+SW-A-DEIE(config-vlan)# name VLAN_DEIE_101
+SW-A-DEIE(config-vlan)#interface GigabitEthernet0/0
+SW-A-DEIE(config-if)# switchport trunk allowed vlan add 101
+SW-A-DEIE(config-if)#interface GigabitEthernet0/1
+SW-A-DEIE(config-if)# switchport access vlan 101
+SW-A-DEIE(config-if)#interface GigabitEthernet0/2
+SW-A-DEIE(config-if)# switchport access vlan 101

@@ -95,3 +95,6 @@ SW-D-DMME(config)#interface Vlan103
 SW-D-DMME(config-if)#ip address 10.255.1.10 255.255.255.252
 SW-D-DMME(config-if)#no shutdown
 SW-D-DMME(config-if)#exit
+
+SW-D-DMME(config)#interface Vlan30
+SW-D-DMME(config-if)#ip helper-address 10.10.40.102

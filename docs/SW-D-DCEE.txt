@@ -96,3 +96,7 @@ SW-D-DCEE(config)#interface Vlan102
 SW-D-DCEE(config-if)#ip address 10.255.1.6 255.255.255.252
 SW-D-DCEE(config-if)#no shutdown
 SW-D-DCEE(config-if)#exit
+
+SW-D-DCEE(config)#interface Vlan20
+SW-D-DCEE(config-if)#ip helper-address 10.10.40.102
+

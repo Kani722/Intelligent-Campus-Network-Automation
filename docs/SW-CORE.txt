@@ -145,29 +145,6 @@ SW-CORE(config-if)#ip address 10.255.1.9 255.255.255.252
 SW-CORE(config-if)#no shutdown
 SW-CORE(config-if)#exit
 
-SW-CORE(config)#interface Gi1/1
-SW-CORE(config-if)#switchport mode access
-SW-CORE(config-if)#switchport access vlan 99
-SW-CORE(config-if)#no shut
-SW-CORE(config-if)#exit
-
-SW-CORE(config)#interface Gi1/2
-SW-CORE(config-if)#switchport mode access
-SW-CORE(config-if)#switchport access vlan 99
-SW-CORE(config-if)#no shut
-SW-CORE(config-if)#exit
-
-SW-CORE(config)#ip routing
-SW-CORE(config)#interface Gi1/3
-SW-CORE(config-if)#no switchport
-SW-CORE(config-if)#ip address dhcp
-SW-CORE(config-if)#no shut
-SW-CORE(config-if)#exit
-
-SW-CORE(config)#interface Gi1/3
-SW-CORE(config-if)#ip nat outside
-SW-CORE(config-if)#exit
-
 SW-CORE(config)#interface Vlan 99
 SW-CORE(config-if)#ip nat inside
 SW-CORE(config-if)#exit
@@ -178,5 +155,30 @@ SW-CORE(config)#access-list 1 permit 10.99.99.0 0.0.0.255
 SW-CORE(config)#ip nat inside source list 1 interface Gi1/3 overload
 SW-CORE(config)#end
 
+SW-CORE(config)#ip access-list extended LAB_SECURITY_POLICY
+SW-CORE(config-ext-nacl)#permit udp host 10.10.40.101 any eq 161
+SW-CORE(config-ext-nacl)#permit tcp host 10.10.40.100 any eq 22
+SW-CORE(config-ext-nacl)#permit tcp 10.99.99.0 0.0.0.255 any eq 22
+SW-CORE(config-ext-nacl)#deny tcp any any eq 22
+SW-CORE(config-ext-nacl)#deny udp any any eq 161
+SW-CORE(config-ext-nacl)#permit ip any any
+SW-CORE(config-ext-nacl)#exit
 
+SW-CORE(config)#interface Vlan 40
+SW-CORE(config-if)#ip access-group LAB_SECURITY_POLICY in
+SW-CORE(config-if)#exit
+SW-CORE(config)#interface Vlan 99
+SW-CORE(config-if)#ip access-group LAB_SECURITY_POLICY in
+SW-CORE(config-if)#exit
 
+SW-CORE(config)#snmp-server community ZabbixLab RO
+
+SW-CORE(config)#interface Vlan101
+SW-CORE(config-if)# ip helper-address 10.10.40.102
+SW-CORE(config-if)#interface Vlan102
+SW-CORE(config-if)# ip address 10.255.2.1 255.255.255.0
+SW-CORE(config-if)# ip helper-address 10.10.40.102
+SW-CORE(config-if)#interface Vlan103
+SW-CORE(config-if)# ip address 10.255.3.1 255.255.255.0
+SW-CORE(config-if)# ip helper-address 10.10.40.102
+SW-CORE(config-if)#end

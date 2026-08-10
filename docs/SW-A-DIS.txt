@@ -53,6 +53,7 @@ SW-A-DIS(config)#interface Gi0/3
 SW-A-DIS(config-if)#description VM-DHCP-Link
 SW-A-DIS(config-if)#switchport mode access
 SW-A-DIS(config-if)#switchport access vlan 40
+SW-A-DIS(config-if)#spanning-tree portfast edge
 SW-A-DIS(config-if)#no shutdown
 SW-A-DIS(config-if)#exit
 
@@ -72,3 +73,35 @@ SW-A-DIS(config)#line console 0
 SW-A-DIS(config-line)#login local
 SW-A-DIS(config-line)#exit
 
+SW-A-DIS(config)#interface GigabitEthernet1/1
+SW-A-DIS(config-if)#description Auto-VM
+SW-A-DIS(config-if)#switchport mode access
+SW-A-DIS(config-if)#switchport access vlan 40
+SW-A-DIS(config-if)#spanning-tree portfast
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+
+SW-A-DIS(config)#interface GigabitEthernet1/2
+SW-A-DIS(config-if)#description Zabbix-VM
+SW-A-DIS(config-if)#switchport mode access
+SW-A-DIS(config-if)#switchport access vlan 40
+SW-A-DIS(config-if)#spanning-tree portfast
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+
+SW-A-DIS(config)#interface GigabitEthernet1/1
+SW-A-DIS(config-if)#description Auto-VM-MGMT
+SW-A-DIS(config-if)#switchport access vlan 99
+SW-A-DIS(config-if)#switchport mode access
+SW-A-DIS(config-if)#exit
+
+SW-A-DIS(config)#interface Vlan99
+SW-A-DIS(config-if)#description VLAN-MGMT-Gateway
+SW-A-DIS(config-if)#ip address 10.99.99.1 255.255.255.0
+SW-A-DIS(config-if)#no shutdown
+SW-A-DIS(config-if)#exit
+
+SW-A-DIS(config)#router ospf 1
+SW-A-DIS(config-router)#network 10.99.99.0 0.0.0.255 area 0
+SW-A-DIS(config-router)#passive-interface Vlan99
+SW-A-DIS(config-router)#end
